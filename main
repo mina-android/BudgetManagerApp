@@ -1,0 +1,279 @@
+//libraries
+
+#include <iostream>
+
+#include <vector>
+
+#include <fstream>
+
+using namespace std;
+
+//main lol
+
+int main () {
+
+    cout << "\t\t\t Budget Management App By Mina Android <3\n\n"; //<3<3
+
+    start: //resets the app
+
+    //variables
+
+    char o = 0;
+
+    double income = 0;
+
+    double budget = 0;
+
+    double expense = 0;
+
+    double total_expenses = 0;
+
+    double left_budget;
+
+    double current_budget;
+
+    int number_of_trans = 0;
+
+    int count = 1;
+
+    int index;
+
+    //creates an array to store the expenses
+
+    vector<double> expenses;
+
+    //gets the budget
+
+    cout << " Enter Your Budget\n";
+
+    cin >> budget;
+
+    //gets the income
+
+    cout << " Enter Your Income\n";
+
+    cin >> income;
+
+    //gets number of expenses
+
+    cout << " Enter Number Of Your Expenses\n";
+
+    cin >> number_of_trans;
+
+    //gets the expenses
+
+    cout << " Enter Your Expenses\n";
+
+    //loop to get the expenses
+
+    while (count <= number_of_trans) {
+
+        cin >> expense;
+
+        count++;
+
+        total_expenses += expense;
+
+        expenses.push_back(expense);
+
+    }
+
+    //some math
+
+    current_budget = income - total_expenses;
+
+    left_budget = current_budget - budget;
+
+    //if to check the budget
+
+    if (left_budget < 0) {
+
+        cout << " You exceeded your budget\n\n";
+
+    }
+
+    else if (left_budget < budget) {
+
+        cout << " The money left to spend = " << left_budget << endl << endl;
+
+    }
+
+    exporter: //executes export data option
+
+    
+
+    //data exporter
+
+  ofstream outfile;
+
+    outfile.open("budget_data.txt");
+
+    if (!outfile) {
+
+        cout << "Unable to open file";
+
+        exit(1);
+
+    }
+
+    outfile << "Income: " << income << endl;
+
+    outfile << "Budget: " << budget << endl;
+
+    outfile << "Total Expenses: " << total_expenses << endl;
+
+    outfile << "Money left to spend: " << left_budget << endl;
+
+    outfile << "Expenses: ";
+
+    for (int i = 0; i < expenses.size(); i++) {
+
+        outfile << expenses[i] << " ";
+
+    }
+
+    outfile << endl;
+
+    cout << " Data exported successfully!\n\n";
+
+    outfile.close();
+
+    options: //executes default case
+
+    //available options
+
+    cout << " Press S to view summary\n";
+
+    cout << " Press X to edit your expenses\n";
+
+    cout << " Press I to edit your income\n";
+
+    cout << " Press B to edit your budget\n";
+
+    cout << " Press T to export your data\n";
+
+    cout << " Press R to reset the app\n";
+
+    cout << " Press E to exit\n";
+
+    cin >> o;
+
+    //selection between options
+
+    switch (o) {
+
+        //views the summary
+
+        case's':
+
+            cout << " Your income = " << income << endl;
+
+            cout << " Your budget = " << budget << endl;
+
+            cout << " Your total expenses = " << total_expenses << endl;
+
+            cout << " The money left to spend = " << left_budget << endl;
+
+            cout << " Your expenses are: ";
+
+            for (int i = 0; i < expenses.size(); i++) {
+
+                cout << expenses[i] << " ";
+
+            }
+
+            cout << endl << endl;
+
+            goto options;
+
+            //edit the expenses
+
+        case 'x':
+
+            cout << "Enter the number of the expense you want to edit: ";
+
+            cin >> index;
+
+            total_expenses = total_expenses - expenses[index - 1];
+
+            cout << "Enter the new value for the expense: ";
+
+            cin >> expense;
+
+            expenses[index - 1] = expense;
+
+            total_expenses += expense;
+
+            current_budget = income - total_expenses;
+
+            left_budget = current_budget - budget;
+
+            cout << "Expense edited successfully!" << endl << endl;
+
+            goto options;
+
+            //edit the income
+
+        case 'i':
+
+            cout << "Enter your new income: ";
+
+            cin >> income;
+
+            current_budget = income - total_expenses;
+
+            left_budget = current_budget - budget;
+
+            cout << "Income edited successfully!" << endl << endl;
+
+            goto options;
+
+            //edit budget
+
+        case 'b':
+
+            cout << "Enter your new budget: ";
+
+            cin >> budget;
+
+            current_budget = income - total_expenses;
+
+            left_budget = current_budget - budget;
+
+            cout << "Budget edited successfully!" << endl << endl;
+
+            goto options;
+
+      
+
+            //export the data
+
+        case 't':
+
+            goto exporter;
+
+            //reset the app
+
+        case 'r':
+
+            goto start;
+
+            //exits the program
+
+        case 'e':
+
+            cout << " Exiting program, hope you liked the experience.\n";
+
+            exit(0);
+
+            //prompt to try again
+
+        default:
+
+            cout << " Wrong input, please try again\n\n";
+
+            goto options;
+
+    }
+
+}
